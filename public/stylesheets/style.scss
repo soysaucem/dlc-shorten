@@ -1,0 +1,34 @@
+body {
+  font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00b7ff;
+}
+
+.container {
+  height: 90vh;
+
+  .shortener-form {
+    margin-top: 300px;
+    width: 75%;
+  }
+
+  .list-group {
+    margin-bottom: 50px;
+
+    .list-group-item {
+      .long-url,
+      .short-url {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+      }
+
+      .copied {
+        background-color: green;
+      }
+    }
+  }
+}

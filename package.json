@@ -1,0 +1,29 @@
+{
+  "name": "nodejs-blog",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon --exec babel-node --preset=2015 ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "express-session": "^1.17.1",
+    "http-errors": "~1.6.3",
+    "mongoose": "^5.9.19",
+    "morgan": "~1.9.1",
+    "node-sass-middleware": "0.11.0",
+    "nodemon": "^2.0.4",
+    "shortid": "^2.2.15",
+    "valid-url": "^1.0.9"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.1",
+    "@babel/core": "^7.10.2",
+    "@babel/node": "^7.10.1",
+    "@babel/preset-env": "^7.10.2"
+  }
+}

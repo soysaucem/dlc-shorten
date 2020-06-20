@@ -1,0 +1,23 @@
+body {
+  font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif; }
+
+a {
+  color: #00b7ff; }
+
+.container {
+  height: 90vh; }
+  .container .shortener-form {
+    margin-top: 300px;
+    width: 75%; }
+  .container .list-group {
+    margin-bottom: 50px; }
+    .container .list-group .list-group-item .long-url,
+    .container .list-group .list-group-item .short-url {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%; }
+    .container .list-group .list-group-item .copied {
+      background-color: green; }
+
+/*# sourceMappingURL=style.css.map */

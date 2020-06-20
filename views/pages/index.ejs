@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include("../components/head.ejs") %>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <%- include("../components/navbar.ejs") %>
+
+    <div
+      class="container d-flex flex-column align-items-center"
+    >
+      <% if(locals.errors) { %>
+      <div class="alert alert-danger w-75">
+        <% errors.forEach((error) => {%>
+        <li><%= error %></li>
+        <%})%>
+      </div>
+      <%} %>
+
+      <form class="shortener-form" method="POST" action="/api/shorten">
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            id="url-input"
+            class="form-control"
+            placeholder="Enter URL here"
+            aria-label="URL"
+            aria-describedby="shorten-button"
+            name="url"
+          />
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="submit" id="shorten-button">
+              Shorten
+            </button>
+          </div>
+        </div>
+      </form>
+    
+      <% if(locals.shortenObjects) { %>
+        <ul class="list-group w-75">
+          <% shortenObjects.forEach((object) => {%>
+          <li class="list-group-item d-flex flex-column">
+            <span class="long-url mb-2"><%= object.longUrl %></span>
+            <a class="short-url mb-2" href="<%= object.shortenUrl %>"><%= object.shortenUrl %></a>
+            <button class="btn btn-secondary copy-btn">Copy</button>
+          </li>
+          <%})%>
+        </div>
+        <%} %>
+    </div>
+
+
+    
+    <%- include("../components/scripts.ejs") %>
+  </body>
+</html>
