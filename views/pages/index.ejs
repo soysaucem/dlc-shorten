@@ -10,32 +10,34 @@
     <div
       class="container d-flex flex-column align-items-center"
     >
-      <% if(locals.errors) { %>
-      <div class="alert alert-danger w-75">
-        <% errors.forEach((error) => {%>
-        <li><%= error %></li>
-        <%})%>
-      </div>
-      <%} %>
-
-      <form class="shortener-form" method="POST" action="/api/shorten">
-        <div class="input-group mb-3">
-          <input
-            type="text"
-            id="url-input"
-            class="form-control"
-            placeholder="Enter URL here"
-            aria-label="URL"
-            aria-describedby="shorten-button"
-            name="url"
-          />
-          <div class="input-group-append">
-            <button class="btn btn-primary" type="submit" id="shorten-button">
-              Shorten
-            </button>
+      <div class="shortener-form">
+        <% if(locals.errors) { %>
+          <div class="alert alert-danger">
+            <% errors.forEach((error) => {%>
+            <li><%= error %></li>
+            <%})%>
           </div>
-        </div>
-      </form>
+          <%} %>
+    
+          <form method="POST" action="/api/shorten">
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                id="url-input"
+                class="form-control"
+                placeholder="Enter URL here"
+                aria-label="URL"
+                aria-describedby="shorten-button"
+                name="url"
+              />
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="submit" id="shorten-button">
+                  Shorten
+                </button>
+              </div>
+            </div>
+          </form>
+      </div>
     
       <% if(locals.shortenObjects) { %>
         <ul class="list-group w-75">
