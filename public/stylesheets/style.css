@@ -9,6 +9,10 @@ a {
   .container .shortener-form {
     margin-top: 300px;
     width: 75%; }
+  .container .login-form,
+  .container .signup-form {
+    width: 45%;
+    margin-top: 150px; }
   .container .list-group {
     margin-bottom: 50px; }
     .container .list-group .list-group-item .long-url,
