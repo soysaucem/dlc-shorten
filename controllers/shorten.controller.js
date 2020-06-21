@@ -1,43 +1,46 @@
-import Item from '../models/shorten-item';
+import Item from '../models/item';
 import validUrl from 'valid-url';
 
 export async function createShortenUrl(req, res, next) {
   try {
-    const url = req.body.url;
+    const { url } = req.body;
 
     if (!validUrl.isUri(url)) {
       req.session.errors = ['Not a valid url'];
-      res.redirect('/');
-    } else {
-      const addedItem = await Item.create({ url: url });
-      const shortenObject = {
-        shortenUrl:
-          req.protocol + '://' + req.get('host') + '/' + addedItem._id,
-        longUrl: url,
-      };
-
-      req.session.shortenObjects = req.session.shortenObjects
-        ? [...req.session.shortenObjects, shortenObject]
-        : [shortenObject];
-
-      res.redirect('/');
+      return res.redirect('/');
     }
+
+    const addedItem = await Item.create({ url: url });
+    const shortenObject = {
+      shortenUrl: req.protocol + '://' + req.get('host') + '/' + addedItem._id,
+      longUrl: url,
+    };
+
+    req.session.shortenObjects = req.session.shortenObjects
+      ? [...req.session.shortenObjects, shortenObject]
+      : [shortenObject];
+
+    return res.redirect('/');
   } catch (err) {
-    next(err);
+    return next(err);
   }
 }
 
 export async function redirectUrl(req, res, next) {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
     const doc = await Item.findOne({ _id: id });
 
     if (doc) {
-      res.redirect(doc.url);
-    } else {
-      res.redirect('/');
+      return res.redirect(doc.url);
     }
+
+    return res.redirect('/');
   } catch (err) {
-    next(err);
+    return next(err);
   }
+}
+
+export function getShortenUrlsForUser(req, res, next) {
+  console.log('Get shorten urls for user works');
 }

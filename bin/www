@@ -35,7 +35,11 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 mongoose
-  .connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(dbURL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  })
   .then(() => console.log('Database connected!'));
 
 /**

@@ -5,17 +5,21 @@ const router = express.Router();
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  const errors = req.session.errors ? req.session.errors : null;
-  const shortenObjects = req.session.shortenObjects
-    ? req.session.shortenObjects
-    : null;
-  req.session.errors = null;
+  try {
+    const errors = req.session.errors ? req.session.errors : null;
+    const shortenObjects = req.session.shortenObjects
+      ? req.session.shortenObjects
+      : null;
+    req.session.errors = null;
 
-  res.render('pages/index', {
-    pageTitle: 'Doge Shortener',
-    errors,
-    shortenObjects,
-  });
+    return res.render('pages/index', {
+      pageTitle: 'Doge Shortener',
+      errors,
+      shortenObjects,
+    });
+  } catch (err) {
+    return next(err);
+  }
 });
 
 router.get('/:id', ShortenController.redirectUrl);
