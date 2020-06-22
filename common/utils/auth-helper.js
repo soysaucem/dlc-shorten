@@ -120,6 +120,7 @@ export function setTokensToCookie(res, accessToken, refreshToken) {
     .cookie(cookieNames.refreshTokenName, refreshToken, {
       httpOnly: true,
       secure: !(envMode === 'development'),
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
     });
 }
 
