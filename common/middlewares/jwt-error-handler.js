@@ -2,16 +2,13 @@ import silientRefresh from './silient-refresh';
 
 export default async function handleJwtError(err, req, res, next) {
   if (err?.name === 'UnauthorizedError') {
-    if (err?.message === 'jwt expired') {
-      const result = await silientRefresh(req, res);
+    const result = await silientRefresh(req, res);
 
-      if (!result) {
-        return res.redirect('/login');
-      }
-
-      return next();
+    if (!result) {
+      return res.redirect('/login');
     }
-    return res.status(401).json({ error: 'Invalid access token' });
+
+    return next();
   } else {
     return next();
   }
