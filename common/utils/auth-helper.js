@@ -92,13 +92,7 @@ export async function createUser(user) {
   }
 
   const createdUser = (
-    await User.create({
-      _id: v4(),
-      name: user.name,
-      email: user.email,
-      password: hash,
-      createdAt: Date.now(),
-    })
+    await User.create({ name: user.name, email: user.email, password: hash })
   )._doc;
 
   return {
@@ -113,7 +107,7 @@ export async function createUser(user) {
 }
 
 export async function revokeRefreshToken(res, token) {
-  await Token.create({ _id: v4(), value: token });
+  await Token.create({ value: token });
 
   clearCookies(res);
 

@@ -11,11 +11,7 @@ export async function createShortenUrl(req, res, next) {
       return res.redirect('/');
     }
 
-    const addedItem = await Item.create({
-      _id: shortId.generate,
-      url: url,
-      createdAt: Date.now(),
-    });
+    const addedItem = await Item.create({ url: url });
     const shortenObject = {
       shortenUrl: req.protocol + '://' + req.get('host') + '/' + addedItem._id,
       longUrl: url,
