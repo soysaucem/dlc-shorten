@@ -13,7 +13,7 @@ export async function createShortenUrl(req, res, next) {
 
     const addedItem = await Item.create({ url: url });
     const shortenObject = {
-      shortenUrl: req.protocol + '://' + req.get('host') + '/' + addedItem._id,
+      shortenUrl: 'https://' + req.get('host') + '/' + addedItem._id,
       longUrl: url,
     };
 
