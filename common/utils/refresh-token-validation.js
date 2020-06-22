@@ -18,7 +18,6 @@ export default async function validateRefreshToken(req) {
 
     return payload;
   } catch (err) {
-    console.log(err);
     return null;
   }
 }

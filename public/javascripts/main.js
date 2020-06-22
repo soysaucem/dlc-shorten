@@ -43,7 +43,6 @@ $(document).ready(function () {
               `<div class="alert alert-danger w-100 mt-3"><p>${res.error}</p></div>`
             );
         } else {
-          window.localStorage.setItem('app_access_token', res.accessToken);
           location.href = res.redirect;
         }
       });
@@ -72,7 +71,6 @@ $(document).ready(function () {
               `<div class="alert alert-danger w-100 mt-3"><p>${res.error}</p></div>`
             );
         } else {
-          window.localStorage.setItem('app_access_token', res.accessToken);
           location.href = res.redirect;
         }
       });
@@ -84,9 +82,7 @@ $(document).ready(function () {
     fetch('/api/logout', {
       method: 'post',
       headers: {
-        Authorization: `Bearer ${window.localStorage.getItem(
-          'app_access_token'
-        )}`,
+        Authorization: `Bearer ${$.cookie('app_access_token')}`,
       },
     })
       .then((res) => res.json())

@@ -63,5 +63,8 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('pages/404.html');
+  if (err.status === 404) {
+    return res.render('pages/404.html');
+  }
+  return res.render('pages/503.html');
 });

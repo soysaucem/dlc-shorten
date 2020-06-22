@@ -2,7 +2,7 @@ import {
   validatePassword,
   createUser,
   revokeRefreshToken,
-  setTokenToCookie,
+  setTokensToCookie,
   createAccessToken,
   createRefreshToken,
 } from '../common/utils/auth-helper';
@@ -17,7 +17,7 @@ export async function login(req, res, next) {
     const result = await validatePassword(email, password);
 
     if (result.status === 200) {
-      setTokenToCookie(res, refreshTokenName, result.refreshToken);
+      setTokensToCookie(res, result.message.accessToken, result.refreshToken);
     }
 
     return res.status(result.status).json(result.message);
@@ -33,7 +33,7 @@ export async function signup(req, res, next) {
     const result = await createUser({ name, email, password });
 
     if (result.status === 200) {
-      setTokenToCookie(res, refreshTokenName, result.refreshToken);
+      setTokensToCookie(res, result.message.accessToken, result.refreshToken);
     }
 
     return res.status(result.status).json(result.message);
@@ -61,8 +61,8 @@ export async function refreshToken(req, res) {
     const user = (await User.findOne({ _id: payload.id }))?._doc;
 
     if (user) {
-      setTokenToCookie(res, refreshTokenName, createRefreshToken(user));
-      return res.status(200).json({ accessToken: createAccessToken(user) });
+      setTokensToCookie(res, createAccessToken(user), createRefreshToken(user));
+      return res.status(200).json({ ok: true });
     }
   }
 

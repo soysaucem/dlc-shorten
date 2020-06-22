@@ -47,5 +47,5 @@ export async function redirectUrl(req, res, next) {
 }
 
 export function getShortenUrlsForUser(req, res, next) {
-  console.log('Get shorten urls for user works');
+  return res.send('works!');
 }

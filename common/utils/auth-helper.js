@@ -17,7 +17,7 @@ export function createAccessToken(user) {
     { sub: user.id, id: user._id, email: user.email },
     accessTokenSecret,
     {
-      expiresIn: '10m',
+      expiresIn: '20s',
     }
   );
 
@@ -120,13 +120,17 @@ export async function revokeRefreshToken(res, token) {
   return true;
 }
 
-export function setTokenToCookie(res, tokenName, token) {
-  return res.cookie(tokenName, token, {
-    httpOnly: true,
-    secure: !(envMode === 'development'),
-  });
+export function setTokensToCookie(res, accessToken, refreshToken) {
+  return res
+    .cookie(cookieNames.accessTokenName, accessToken)
+    .cookie(cookieNames.refreshTokenName, refreshToken, {
+      httpOnly: true,
+      secure: !(envMode === 'development'),
+    });
 }
 
 function clearCookies(res) {
-  return res.clearCookie(cookieNames.refreshTokenName);
+  return res
+    .clearCookie(cookieNames.refreshTokenName)
+    .clearCookie(cookieNames.accessTokenName);
 }
