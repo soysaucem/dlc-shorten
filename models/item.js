@@ -1,10 +1,9 @@
 import { Schema, model } from 'mongoose';
-import shortId from 'shortid';
 
 const schema = new Schema({
-  _id: { type: String, default: shortId.generate },
+  _id: { type: String },
   url: { type: String },
-  createdAt: { type: Date, default: Date.now() },
+  createdAt: { type: Date },
 });
 
 const itemModel = model('Item', schema, 'items');

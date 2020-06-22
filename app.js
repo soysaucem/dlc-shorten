@@ -9,6 +9,7 @@ import session from 'express-session';
 import frontendRouter from './routes/frontend/index';
 import backendRouter from './routes/backend/index';
 import validateJwt from './common/middlewares/jwt-validation';
+import handleJwtError from './common/middlewares/jwt-error-handler';
 
 export const app = express();
 
@@ -45,7 +46,7 @@ app.use(
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', frontendRouter);
-app.use('/api', validateJwt(), backendRouter);
+app.use('/api', validateJwt(), handleJwtError, backendRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

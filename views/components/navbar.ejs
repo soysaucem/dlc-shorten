@@ -14,7 +14,11 @@
     Doge Shortener
   </a>
   <div class="buttons">
+    <% if (locals.loggedIn) { %>
+    <button id="logout-btn" class="btn primary">Log out</button>
+    <% } else { %>
     <a href="/login" class="btn btn-light mr-3" role="button">Log in</a>
     <a href="/signup" class="btn btn-primary" role="button">Sign up</a>
+    <% } %>
   </div>
 </nav>

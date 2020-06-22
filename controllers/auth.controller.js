@@ -4,13 +4,11 @@ import {
   revokeRefreshToken,
   setTokenToCookie,
   createAccessToken,
+  createRefreshToken,
 } from '../common/utils/auth-helper';
-import jwt from 'jsonwebtoken';
+import validateRefreshToken from '../common/utils/refresh-token-validation';
 import User from '../models/user';
-import Token from '../models/token';
 import { refreshTokenName } from '../common/utils/cookie-names';
-
-const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
 
 export async function login(req, res, next) {
   try {
@@ -48,26 +46,25 @@ export async function logout(req, res, next) {
   try {
     const refreshToken = req.cookies[refreshTokenName];
 
-    return await revokeRefreshToken(res, refreshToken);
+    const result = await revokeRefreshToken(res, refreshToken);
+
+    return res.json({ result, redirect: '/' });
   } catch (err) {
     return next(err);
   }
 }
 
 export async function refreshToken(req, res) {
-  try {
-    const refreshToken = req.cookies[refreshTokenName];
-    const isBlacklistToken = await Token.findOne({ value: refreshToken });
+  const payload = await validateRefreshToken(req);
 
-    if (isBlacklistToken) {
-      throw Error('Unvalid token');
-    }
-
-    const payload = jwt.verify(refreshToken, refreshTokenSecret);
+  if (payload) {
     const user = (await User.findOne({ _id: payload.id }))?._doc;
 
-    return res.status(200).json({ accessToken: createAccessToken(user) });
-  } catch (err) {
-    return res.status(401).json({ accessToken: '' });
+    if (user) {
+      setTokenToCookie(res, refreshTokenName, createRefreshToken(user));
+      return res.status(200).json({ accessToken: createAccessToken(user) });
+    }
   }
+
+  return res.status(401).json({ accessToken: '' });
 }

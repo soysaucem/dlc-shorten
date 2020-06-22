@@ -1,13 +1,12 @@
 import { Schema, model } from 'mongoose';
-import { v4 } from 'uuid';
 
 const schema = new Schema({
-  _id: { type: String, default: v4() },
+  _id: { type: String },
   name: { type: String },
   email: { type: String, unique: true },
   password: { type: String },
   shortenUrls: { type: [String], default: [] },
-  createdAt: { type: Date, default: Date.now() },
+  createdAt: { type: Date },
 });
 
 const userModel = model('User', schema, 'users');

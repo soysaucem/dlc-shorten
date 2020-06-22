@@ -3,6 +3,7 @@ import User from '../../models/user';
 import Token from '../../models/token';
 import jwt from 'jsonwebtoken';
 import * as cookieNames from '../utils/cookie-names';
+import { v4 } from 'uuid';
 
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
@@ -62,6 +63,7 @@ export async function validatePassword(email, password) {
       message: {
         ...omitPassword(user),
         accessToken: createAccessToken(user),
+        redirect: '/',
       },
     };
   } else {
@@ -78,7 +80,7 @@ export async function createUser(user) {
   if (exist) {
     return {
       status: 400,
-      message: { error: 'Email exists' },
+      message: { error: 'Email has been taken' },
     };
   }
 
@@ -90,7 +92,13 @@ export async function createUser(user) {
   }
 
   const createdUser = (
-    await User.create({ name: user.name, email: user.email, password: hash })
+    await User.create({
+      _id: v4(),
+      name: user.name,
+      email: user.email,
+      password: hash,
+      createdAt: Date.now(),
+    })
   )._doc;
 
   return {
@@ -99,12 +107,13 @@ export async function createUser(user) {
     message: {
       ...omitPassword(createdUser),
       accessToken: createAccessToken(createdUser),
+      redirect: '/',
     },
   };
 }
 
 export async function revokeRefreshToken(res, token) {
-  await Token.create({ value: token });
+  await Token.create({ _id: v4(), value: token });
 
   clearCookies(res);
 
@@ -112,12 +121,12 @@ export async function revokeRefreshToken(res, token) {
 }
 
 export function setTokenToCookie(res, tokenName, token) {
-  res.cookie(tokenName, token, {
+  return res.cookie(tokenName, token, {
     httpOnly: true,
     secure: !(envMode === 'development'),
   });
 }
 
 function clearCookies(res) {
-  res.clearCookie(cookieNames.refreshTokenName);
+  return res.clearCookie(cookieNames.refreshTokenName);
 }

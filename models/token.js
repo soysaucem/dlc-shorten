@@ -1,8 +1,7 @@
 import { Schema, model } from 'mongoose';
-import { v4 } from 'uuid';
 
 const schema = new Schema({
-  _id: { type: String, default: v4() },
+  _id: { type: String },
   value: { type: String },
 });
 
