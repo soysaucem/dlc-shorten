@@ -20,6 +20,7 @@
     "morgan": "~1.9.1",
     "node-sass-middleware": "0.11.0",
     "nodemon": "^2.0.4",
+    "passport": "^0.4.1",
     "shortid": "^2.2.15",
     "uuid": "^8.1.0",
     "valid-url": "^1.0.9"

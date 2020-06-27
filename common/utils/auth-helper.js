@@ -17,7 +17,7 @@ export function createAccessToken(user) {
     { sub: user.id, id: user._id, email: user.email },
     accessTokenSecret,
     {
-      expiresIn: '20s',
+      expiresIn: '10m',
     }
   );
 

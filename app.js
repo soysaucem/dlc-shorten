@@ -10,6 +10,7 @@ import frontendRouter from './routes/frontend/index';
 import backendRouter from './routes/backend/index';
 import validateJwt from './common/middlewares/jwt-validation';
 import handleJwtError from './common/middlewares/jwt-error-handler';
+import startup from './common/middlewares/startup';
 
 export const app = express();
 
@@ -44,6 +45,7 @@ app.use(
   })
 );
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(startup);
 
 app.use('/', frontendRouter);
 app.use('/api', validateJwt(), handleJwtError, backendRouter);
