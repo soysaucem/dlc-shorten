@@ -8,39 +8,43 @@
     <%- include("../components/navbar.ejs") %>
 
     <div class="container d-flex flex-column align-items-center">
-      <form id="signupForm" class="signup-form">
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="name"
-            name="name"
-            placeholder="Enter your name"
-          />
-        </div>
-        <div class="form-group">
-          <label for="email">Email address</label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            name="email"
-            placeholder="Enter email"
-          />
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="password"
-            name="password"
-            placeholder="Password"
-          />
-        </div>
-        <button type="submit" class="btn btn-primary">Log in</button>
-      </form>
+      <div class="signup-form">
+        <%- include("../components/error-block.ejs") %>
+
+        <form method="POST" action="/api/signup">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              name="name"
+              placeholder="Enter your name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              placeholder="Enter email"
+            />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              placeholder="Password"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">Log in</button>
+        </form>
+      </div>
     </div>
 
     <%- include("../components/scripts.ejs") %>

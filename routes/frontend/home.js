@@ -8,15 +8,13 @@ const router = express.Router();
 router.get('/', loggedinGuard, (req, res, next) => {
   try {
     const errors = req.session.errors ? req.session.errors : null;
-    const shortenObjects = req.session.shortenObjects
-      ? req.session.shortenObjects
-      : null;
     req.session.errors = null;
 
     return res.render('pages/index', {
       pageTitle: 'Doge Shortener',
       errors,
-      shortenObjects,
+      shortenObjects: req.session.shortenObjects,
+      user: req.session.user,
     });
   } catch (err) {
     return next(err);

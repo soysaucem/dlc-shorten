@@ -6,7 +6,6 @@ const schema = new Schema({
   name: { type: String },
   email: { type: String, unique: true },
   password: { type: String },
-  shortenUrls: { type: [String], default: [] },
   createdAt: { type: Date, default: Date.now },
 });
 

@@ -1,41 +1,9 @@
 import bcrypt from 'bcrypt';
 import User from '../../models/user';
-import Token from '../../models/token';
-import jwt from 'jsonwebtoken';
-import * as cookieNames from '../utils/cookie-names';
-import { v4 } from 'uuid';
 
-const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
-const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
-const env = process.env.NODE_ENV;
 const saltRounds = parseInt(process.env.SALT_ROUNDS);
 
 // helper functions
-
-export function createAccessToken(user) {
-  const token = jwt.sign(
-    { sub: user.id, id: user._id, email: user.email },
-    accessTokenSecret,
-    {
-      expiresIn: '10m',
-    }
-  );
-
-  return token;
-}
-
-export function createRefreshToken(user) {
-  const token = jwt.sign(
-    { sub: user.id, id: user._id, email: user.email },
-    refreshTokenSecret,
-    {
-      expiresIn: '30d',
-    }
-  );
-
-  return token;
-}
-
 export function omitPassword(user) {
   const { password, ...userWithoutPassword } = user;
 
@@ -47,31 +15,33 @@ export async function checkEmailExist(email) {
 }
 
 export async function validatePassword(email, password) {
-  const user = (await User.findOne({ email }))?._doc;
-  const hashedPassword = user ? user.password : '';
+  const errorMessage = 'Invalid email or password!';
+  const user = await User.findOne({ email });
 
-  const match = await bcrypt.compare(password, hashedPassword);
-
-  if (match instanceof Error) {
-    throw match;
-  }
-
-  if (match) {
+  if (!user) {
     return {
-      status: 200,
-      refreshToken: createRefreshToken(user),
-      message: {
-        ...omitPassword(user),
-        accessToken: createAccessToken(user),
-        redirect: '/',
-      },
-    };
-  } else {
-    return {
-      status: 403,
-      message: { error: 'Invalid email or password' },
+      status: 401,
+      message: errorMessage,
+      redirect: '/login',
     };
   }
+
+  const validPassword = await bcrypt.compare(password, user.password);
+
+  if (!validPassword) {
+    return {
+      status: 401,
+      message: errorMessage,
+      redirect: '/login',
+    };
+  }
+
+  return {
+    user,
+    status: 200,
+    message: 'Ok',
+    redirect: '/',
+  };
 }
 
 export async function createUser(user) {
@@ -80,52 +50,28 @@ export async function createUser(user) {
   if (exist) {
     return {
       status: 400,
-      message: { error: 'Email has been taken' },
+      message: 'Email has been taken',
+      redirect: '/signup',
     };
   }
 
   // hash password and store to database
   const hash = await bcrypt.hash(user.password, saltRounds);
 
-  if (hash instanceof Error) {
+  if (!hash) {
     throw hash;
   }
 
-  const createdUser = (
-    await User.create({ name: user.name, email: user.email, password: hash })
-  )._doc;
+  const createdUser = await User.create({
+    name: user.name,
+    email: user.email,
+    password: hash,
+  });
 
   return {
     status: 200,
-    refreshToken: createRefreshToken(user),
-    message: {
-      ...omitPassword(createdUser),
-      accessToken: createAccessToken(createdUser),
-      redirect: '/',
-    },
+    message: 'Ok',
+    redirect: '/',
+    user: createdUser,
   };
-}
-
-export async function revokeRefreshToken(res, token) {
-  await Token.create({ value: token });
-
-  clearCookies(res);
-
-  return true;
-}
-
-export function setTokensToCookie(res, accessToken, refreshToken) {
-  return res
-    .cookie(cookieNames.accessTokenName, accessToken)
-    .cookie(cookieNames.refreshTokenName, refreshToken, {
-      httpOnly: true,
-      secure: !(env === 'development'),
-      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
-    });
-}
-
-function clearCookies(res) {
-  return res
-    .clearCookie(cookieNames.refreshTokenName)
-    .clearCookie(cookieNames.accessTokenName);
 }

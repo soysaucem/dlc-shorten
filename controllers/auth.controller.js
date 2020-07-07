@@ -1,14 +1,4 @@
-import {
-  validatePassword,
-  createUser,
-  revokeRefreshToken,
-  setTokensToCookie,
-  createAccessToken,
-  createRefreshToken,
-} from '../common/utils/auth-helper';
-import validateRefreshToken from '../common/utils/refresh-token-validation';
-import User from '../models/user';
-import { refreshTokenName } from '../common/utils/cookie-names';
+import { validatePassword, createUser } from '../common/utils/auth-helper';
 
 export async function login(req, res, next) {
   try {
@@ -17,10 +7,12 @@ export async function login(req, res, next) {
     const result = await validatePassword(email, password);
 
     if (result.status === 200) {
-      setTokensToCookie(res, result.message.accessToken, result.refreshToken);
+      req.session.user = result.user;
+    } else {
+      req.session.errors = [result.message];
     }
 
-    return res.status(result.status).json(result.message);
+    return res.redirect(result.redirect);
   } catch (err) {
     return next(err);
   }
@@ -33,10 +25,12 @@ export async function signup(req, res, next) {
     const result = await createUser({ name, email, password });
 
     if (result.status === 200) {
-      setTokensToCookie(res, result.message.accessToken, result.refreshToken);
+      req.session.user = result.user;
+    } else {
+      req.session.errors = [result.message];
     }
 
-    return res.status(result.status).json(result.message);
+    return res.redirect(result.redirect);
   } catch (err) {
     return next(err);
   }
@@ -44,27 +38,9 @@ export async function signup(req, res, next) {
 
 export async function logout(req, res, next) {
   try {
-    const refreshToken = req.cookies[refreshTokenName];
-
-    const result = await revokeRefreshToken(res, refreshToken);
-
-    return res.json({ result, redirect: '/' });
+    req.session.user = null;
+    return res.redirect('/');
   } catch (err) {
     return next(err);
   }
-}
-
-export async function refreshToken(req, res) {
-  const payload = await validateRefreshToken(req);
-
-  if (payload) {
-    const user = (await User.findOne({ _id: payload.id }))?._doc;
-
-    if (user) {
-      setTokensToCookie(res, createAccessToken(user), createRefreshToken(user));
-      return res.status(200).json({ ok: true });
-    }
-  }
-
-  return res.status(401).json({ accessToken: '' });
 }

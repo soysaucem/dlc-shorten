@@ -5,7 +5,13 @@ const router = express.Router();
 
 router.get('/login', loggedinGuard, (req, res, next) => {
   try {
-    return res.render('pages/login', { pageTitle: 'Log in | Doge Shortener' });
+    const errors = req.session.errors ? req.session.errors : null;
+    req.session.errors = null;
+
+    return res.render('pages/login', {
+      pageTitle: 'Log in | Doge Shortener',
+      errors,
+    });
   } catch (err) {
     return next(err);
   }
@@ -13,8 +19,12 @@ router.get('/login', loggedinGuard, (req, res, next) => {
 
 router.get('/signup', loggedinGuard, (req, res, next) => {
   try {
+    const errors = req.session.errors ? req.session.errors : null;
+    req.session.errors = null;
+
     return res.render('pages/signup', {
       pageTitle: 'Sign up | Doge Shortener',
+      errors,
     });
   } catch (err) {
     return next(err);
