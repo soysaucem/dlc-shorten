@@ -7,7 +7,7 @@ import { v4 } from 'uuid';
 
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
-const envMode = process.env.MODE;
+const env = process.env.NODE_ENV;
 const saltRounds = parseInt(process.env.SALT_ROUNDS);
 
 // helper functions
@@ -119,7 +119,7 @@ export function setTokensToCookie(res, accessToken, refreshToken) {
     .cookie(cookieNames.accessTokenName, accessToken)
     .cookie(cookieNames.refreshTokenName, refreshToken, {
       httpOnly: true,
-      secure: !(envMode === 'development'),
+      secure: !(env === 'development'),
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
     });
 }
