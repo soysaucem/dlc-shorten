@@ -21,6 +21,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
+if (env === 'production') {
+  app.set('trust proxy', 1);
+}
+
 // middlewares setup
 app.use(
   session({
