@@ -13,7 +13,7 @@ var mongoose = require('mongoose');
 /**
  * Get DB URL
  */
-const dbURL = process.env.DB_URL;
+const dbURL = process.env.DB_URI;
 
 /**
  * Get port from environment and store in Express.

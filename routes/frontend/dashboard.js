@@ -5,7 +5,17 @@ const router = express.Router();
 
 router.get('/dashboard', authGuard, (req, res, next) => {
   try {
-    res.status(200).send('User dashboard!');
+    return res.render('pages/dashboard', {
+      pageTitle: 'Dashboard | Doge Shortener',
+    });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+router.get('/dashboard/links', authGuard, (req, res, next) => {
+  try {
+    return res.status(200).send('links!');
   } catch (err) {
     return next(err);
   }

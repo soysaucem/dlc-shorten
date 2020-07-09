@@ -20,4 +20,9 @@ $(document).ready(function () {
     document.execCommand('copy');
     $temp.remove();
   });
+
+  $('#menu-toggle').click(function (e) {
+    e.preventDefault();
+    $('#wrapper').toggleClass('toggled');
+  });
 });

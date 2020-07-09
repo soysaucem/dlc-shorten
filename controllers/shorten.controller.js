@@ -1,6 +1,5 @@
 import Item from '../models/item';
 import validUrl from 'valid-url';
-import shortId from 'shortid';
 
 export async function createShortenUrl(req, res, next) {
   try {
