@@ -1,24 +1,31 @@
 import express from 'express';
 import authGuard from '../../common/middlewares/auth-guard';
+import * as DashboardController from '../../controllers/dashboard.controller';
+import { routes } from '../../common/utils/vars';
 
 const router = express.Router();
 
-router.get('/dashboard', authGuard, (req, res, next) => {
-  try {
-    return res.render('pages/dashboard', {
-      pageTitle: 'Dashboard | Doge Shortener',
-    });
-  } catch (err) {
-    return next(err);
-  }
-});
+router.get(
+  routes.dashboard.home,
+  authGuard,
+  DashboardController.renderHomePage
+);
 
-router.get('/dashboard/links', authGuard, (req, res, next) => {
-  try {
-    return res.status(200).send('links!');
-  } catch (err) {
-    return next(err);
-  }
-});
+router.get(
+  routes.dashboard.profile,
+  authGuard,
+  DashboardController.renderProfilePage
+);
+
+router.get(
+  routes.dashboard.links,
+  authGuard,
+  DashboardController.renderLinksPage
+);
+
+router.get(
+  routes.dashboard.editLink(':id'),
+  DashboardController.renderEditLinkPage
+);
 
 export default router;

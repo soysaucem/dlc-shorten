@@ -1,0 +1,26 @@
+<div class="card">
+  <div class="card-body">
+    <%- include("../components/message-block.ejs") %>
+
+    <h4 class="card-title">
+      Update your link
+    </h4>
+    <form
+      class="card-text"
+      method="POST"
+      action="<%= routes.api.links.edit(link._id) %>"
+    >
+      <div class="form-group">
+        <label for="url">Original link</label>
+        <input
+          type="text"
+          class="form-control"
+          id="url"
+          name="url"
+          value="<%= link.url %>"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Update</button>
+    </form>
+  </div>
+</div>

@@ -39,6 +39,34 @@ a {
   }
 }
 
+.main-content {
+  padding-top: 70px;
+
+  .container-fluid {
+    .card {
+      .card-body {
+        .list-group {
+          margin-bottom: 50px;
+
+          .list-group-item {
+            .long-url,
+            .short-url {
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              max-width: 100%;
+            }
+
+            .copied {
+              background-color: green;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 #wrapper {
   overflow-x: hidden;
 

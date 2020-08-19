@@ -15,14 +15,16 @@ export async function checkEmailExist(email) {
 }
 
 export async function validatePassword(email, password) {
+  const failureStatus = 401;
+  const failureRedirect = '/login';
   const errorMessage = 'Invalid email or password!';
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).lean();
 
   if (!user) {
     return {
-      status: 401,
+      status: failureStatus,
       message: errorMessage,
-      redirect: '/login',
+      redirect: failureRedirect,
     };
   }
 
@@ -30,14 +32,14 @@ export async function validatePassword(email, password) {
 
   if (!validPassword) {
     return {
-      status: 401,
+      status: failureStatus,
       message: errorMessage,
-      redirect: '/login',
+      redirect: failureRedirect,
     };
   }
 
   return {
-    user,
+    user: omitPassword(user),
     status: 200,
     message: 'Ok',
     redirect: '/',
@@ -66,12 +68,12 @@ export async function createUser(user) {
     name: user.name,
     email: user.email,
     password: hash,
-  });
+  }).lean();
 
   return {
     status: 200,
     message: 'Ok',
     redirect: '/',
-    user: createdUser,
+    user: omitPassword(createdUser),
   };
 }

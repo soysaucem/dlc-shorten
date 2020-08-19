@@ -1,0 +1,88 @@
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">
+      Shorten your link
+    </h4>
+    <form
+      class="card-text"
+      method="POST"
+      action="<%= routes.api.shortenLink %>"
+    >
+      <div class="form-group">
+        <label for="url">Your link</label>
+        <input
+          type="text"
+          class="form-control"
+          id="url-input"
+          name="url"
+          placeholder="Enter URL here"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Shorten</button>
+    </form>
+
+    <% if(shortenObjects) { %>
+    <ul class="list-group w-100 mt-5">
+      <% shortenObjects.forEach((object) => {%>
+      <li class="list-group-item d-flex flex-column">
+        <span class="long-url mb-2"><%= object.longUrl %></span>
+        <a class="short-url mb-2" href="<%= object.shortenUrl %>"
+          ><%= object.shortenUrl %></a
+        >
+        <button class="btn btn-secondary copy-btn">Copy</button>
+      </li>
+      <%})%>
+    </ul>
+    <%} %>
+  </div>
+</div>
+
+<div class="card my-5">
+  <div class="card-body">
+    <h4 class="card-title">Your links</h4>
+    <div class="table-responsive">
+      <table class="table card-text">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">Link</th>
+            <th scope="col">Original link</th>
+            <th scope="col">Created at</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- prettier-ignore -->
+          <% links.forEach(link => { %>
+          <tr>
+            <th scope="row">
+              <a href="<%= prefixShortenUrl + link._id %>"
+                ><%= prefixShortenUrl + link._id %></a
+              >
+            </th>
+            <td><a href="<%= link.url %>"><%= link.url %></a></td>
+            <td><%= moment(link.createdAt).fromNow() %></td>
+            <td class="d-flex flex-row">
+              <a class="mr-2" href="<%= routes.dashboard.editLink(link._id) %>">
+                <button class="btn btn-sm material-icons text-primary">
+                  edit
+                </button>
+              </a>
+              <form
+                method="POST"
+                action="<%= routes.api.links.delete(link._id) %>"
+              >
+                <button
+                  type="submit"
+                  class="btn btn-sm material-icons text-danger"
+                >
+                  delete
+                </button>
+              </form>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

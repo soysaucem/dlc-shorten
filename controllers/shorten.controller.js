@@ -1,5 +1,6 @@
-import Item from '../models/item';
+import ItemModel from '../models/item';
 import validUrl from 'valid-url';
+import { routes } from '../common/utils/vars';
 
 export async function createShortenUrl(req, res, next) {
   try {
@@ -10,7 +11,11 @@ export async function createShortenUrl(req, res, next) {
       return res.redirect('/');
     }
 
-    const addedItem = await Item.create({ url: url });
+    const addedItem = await ItemModel.create({
+      user: req.session.user?._id,
+      url: url,
+    });
+
     const shortenObject = {
       shortenUrl: 'https://' + req.get('host') + '/' + addedItem._id,
       longUrl: url,
@@ -19,6 +24,10 @@ export async function createShortenUrl(req, res, next) {
     req.session.shortenObjects = req.session.shortenObjects
       ? [...req.session.shortenObjects, shortenObject]
       : [shortenObject];
+
+    if (req.get('referer').includes('dashboard')) {
+      return res.redirect(routes.dashboard.links);
+    }
 
     return res.redirect('/');
   } catch (err) {
@@ -29,7 +38,7 @@ export async function createShortenUrl(req, res, next) {
 export async function redirectUrl(req, res, next) {
   try {
     const { id } = req.params;
-    const doc = await Item.findOne({ _id: id });
+    const doc = await ItemModel.findOne({ _id: id });
 
     if (doc) {
       return res.redirect(doc.url);

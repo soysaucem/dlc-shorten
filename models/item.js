@@ -3,6 +3,7 @@ import shortId from 'shortid';
 
 const schema = new Schema({
   _id: { type: String, default: shortId.generate },
+  user: { type: String },
   url: { type: String },
   createdAt: { type: Date, default: Date.now },
 });
