@@ -1,6 +1,8 @@
 <div class="card">
   <div class="card-body">
+    <!-- prettier-ignore -->
     <%- include("../components/message-block.ejs") %>
+    <%- include("../components/error-block.ejs") %>
 
     <h4 class="card-title">
       Update your link
@@ -18,6 +20,7 @@
           id="url"
           name="url"
           value="<%= link.url %>"
+          placeholder="Enter URL here"
         />
       </div>
       <button type="submit" class="btn btn-primary w-100">Update</button>

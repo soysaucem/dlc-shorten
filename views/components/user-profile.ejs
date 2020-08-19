@@ -1,0 +1,74 @@
+<h2>Hello <%= user.name %></h2>
+<!-- prettier-ignore -->
+<%- include("../components/message-block.ejs") %>
+<%- include("../components/error-block.ejs") %>
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">
+      Update your profile
+    </h4>
+    <form
+      class="card-text"
+      method="POST"
+      action="<%= routes.api.users.updateProfile(user._id) %>"
+    >
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          value="<%= user.name %> "
+          placeholder="Enter your name"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Update</button>
+    </form>
+  </div>
+</div>
+
+<div class="card my-5">
+  <div class="card-body">
+    <h4 class="card-title">
+      Update your password
+    </h4>
+    <form
+      class="card-text"
+      method="POST"
+      action="<%= routes.api.users.updatePassword(user._id) %>"
+    >
+      <div class="form-group">
+        <label for="currentPassword">Current password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="currentPassword"
+          name="currentPassword"
+          placeholder="Enter current password"
+        />
+      </div>
+      <div class="form-group">
+        <label for="newPassword">New password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="newPassword"
+          name="newPassword"
+          placeholder="Enter new password"
+        />
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirm new password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="confirmPassword"
+          name="confirmPassword"
+          placeholder="Enter confirm password"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Update</button>
+    </form>
+  </div>
+</div>

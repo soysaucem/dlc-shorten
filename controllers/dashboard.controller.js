@@ -1,4 +1,5 @@
 import ItemModel from '../models/item';
+import UserModel from '../models/user';
 import moment from 'moment';
 import { routes } from '../common/utils/vars';
 
@@ -27,6 +28,8 @@ export async function renderEditLinkPage(req, res, next) {
     const link = await ItemModel.findOne({ _id: req.params.id }).lean();
     const messages = req.session.messages;
     req.session.messages = null;
+    const errors = req.session.errors;
+    req.session.errors = null;
 
     return res.render('pages/dashboard', {
       pageTitle: 'Dashboard | Doge Shortener',
@@ -34,18 +37,28 @@ export async function renderEditLinkPage(req, res, next) {
       path: routes.dashboard.editLink(':id'),
       routes,
       messages,
+      errors,
     });
   } catch (err) {
     return next(err);
   }
 }
 
-export function renderProfilePage(req, res, next) {
+export async function renderProfilePage(req, res, next) {
   try {
+    const user = await UserModel.findById({ _id: req.session.user._id }).lean();
+    const messages = req.session.messages;
+    req.session.messages = null;
+    const errors = req.session.errors;
+    req.session.errors = null;
+
     return res.render('pages/dashboard', {
       pageTitle: 'Dashboard | Doge Shortener',
       path: routes.dashboard.profile,
       routes,
+      user,
+      messages,
+      errors,
     });
   } catch (err) {
     return next(err);

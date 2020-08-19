@@ -21,8 +21,10 @@ export const routes = {
       logout: `${apiPrefix}/logout`,
     },
     users: {
-      id: `${apiPrefix}/users/:id`,
-      shortenUrls: `${apiPrefix}/users/:id/shortenUrls`,
+      user: (id) => `${apiPrefix}/users/${id}`,
+      updateProfile: (id) => `${apiPrefix}/users/${id}/updateProfile`,
+      updatePassword: (id) => `${apiPrefix}/users/${id}/updatePassword`,
+      shortenUrls: (id) => `${apiPrefix}/users/${id}/shortenUrls`,
     },
     links: {
       base: `${apiPrefix}/links`,

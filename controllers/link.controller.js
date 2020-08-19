@@ -1,10 +1,17 @@
 import ItemModel from '../models/item';
+import validUrl from 'valid-url';
 import { routes } from '../common/utils/vars';
 
 export async function editLink(req, res, next) {
   try {
     const newUrl = req.body.url;
     const id = req.params.id;
+
+    if (!validUrl.isUri(newUrl)) {
+      req.session.errors = ['Not a valid url'];
+
+      return res.redirect(routes.dashboard.editLink(id));
+    }
 
     await ItemModel.updateOne({ _id: id }, { $set: { url: newUrl } });
 
