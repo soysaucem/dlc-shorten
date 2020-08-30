@@ -1,3 +1,5 @@
+'use strict';
+
 import ItemModel from '../models/item';
 import UserModel from '../models/user';
 import moment from 'moment';

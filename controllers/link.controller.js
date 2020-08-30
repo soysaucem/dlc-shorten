@@ -1,3 +1,5 @@
+'use strict';
+
 import ItemModel from '../models/item';
 import validUrl from 'valid-url';
 import { routes } from '../common/utils/vars';

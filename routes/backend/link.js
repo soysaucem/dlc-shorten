@@ -1,3 +1,5 @@
+'use strict';
+
 import express from 'express';
 import { routes } from '../../common/utils/vars';
 import * as LinkController from '../../controllers/link.controller';

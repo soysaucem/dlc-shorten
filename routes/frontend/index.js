@@ -1,3 +1,5 @@
+'use strict';
+
 import express from 'express';
 import homeRouter from './home';
 import authRouter from './auth';

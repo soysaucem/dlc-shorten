@@ -1,3 +1,5 @@
+'use strict';
+
 import express from 'express';
 import * as AuthController from '../../controllers/auth.controller';
 import { routes } from '../../common/utils/vars';

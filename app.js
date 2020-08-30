@@ -1,3 +1,5 @@
+'use strict';
+
 import createError from 'http-errors';
 import express from 'express';
 import path from 'path';

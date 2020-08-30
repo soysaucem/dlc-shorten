@@ -1,3 +1,5 @@
+'use strict';
+
 export default async function authGuard(req, res, next) {
   try {
     if (!req.session.user) {

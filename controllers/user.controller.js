@@ -1,3 +1,5 @@
+'use strict';
+
 import UserModel from '../models/user';
 import bcrypt from 'bcrypt';
 import { routes } from '../common/utils/vars';

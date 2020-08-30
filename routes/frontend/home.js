@@ -1,3 +1,5 @@
+'use strict';
+
 import express from 'express';
 import * as ShortenController from '../../controllers/shorten.controller';
 import loggedinGuard from '../../common/middlewares/loggedin-guard';

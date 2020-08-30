@@ -1,3 +1,5 @@
+'use strict';
+
 import express from 'express';
 import authGuard from '../../common/middlewares/auth-guard';
 import * as DashboardController from '../../controllers/dashboard.controller';

@@ -1,3 +1,5 @@
+'use strict';
+
 import { validatePassword, createUser } from '../common/utils/auth-helper';
 
 export async function login(req, res, next) {

@@ -1,3 +1,5 @@
+'use strict';
+
 import express from 'express';
 import * as ShortenController from '../../controllers/shorten.controller';
 import { routes } from '../../common/utils/vars';

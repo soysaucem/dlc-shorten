@@ -1,3 +1,5 @@
+'use strict';
+
 export default async function loggedinGuard(req, res, next) {
   try {
     const url = req.url;

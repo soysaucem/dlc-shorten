@@ -1,3 +1,5 @@
+'use strict';
+
 const apiPrefix = '/api';
 const dashboardPrefix = '/dashboard';
 

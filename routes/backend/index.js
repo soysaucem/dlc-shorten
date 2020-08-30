@@ -1,3 +1,5 @@
+'use strict';
+
 import express from 'express';
 import shortenRouter from './shorten';
 import authRouter from './auth';
